@@ -1,6 +1,3 @@
-# target : use the camera SDK to capture the picture
-# use OpenCV to deal with it in the future
-
 import sys
 import os
 import shutil
@@ -14,6 +11,13 @@ class MVCam(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+
+        # test auto
+        self.openCam()
+        self.startGrab()
+        #self.saveImage()
+        # self.closeCam()
+        # return 0
 
     def initUI(self):
         # 以下是使用pyqt5初始化UI界面
@@ -146,7 +150,10 @@ class MVCam(QWidget):
     def startGrab(self):  # 开始采集执行本函数
         mode = MVGetTriggerMode(self.hCam)  # 获取当前相机采集模式
         source = MVGetTriggerSource(self.hCam)  # 获取当前相机信号源
-        if(self.sender().text() == '开始采集'):
+
+        # ****************
+        #if(self.sender().text() == '开始采集'):
+        if(True):
             if(mode.pMode == TriggerModeEnums.TriggerMode_Off):  # 当触发模式关闭的时候，界面的行为
                 self.btnStart.setText('停止采集')
                 MVStartGrabWindow(self.hCam, self.winid)  # 将采集的图像传输到指定窗口
@@ -213,11 +220,20 @@ class MVCam(QWidget):
     def saveImage(self):  # 保存图片执行本函数，在非触发模式时，只有采集暂停是才可以保存
         idn = MVGetSampleGrab(self.hCam, self.himage)
         print(idn.idn)
+        
         fname, ok = QFileDialog.getSaveFileName(self, '打开文件', './Images' + str(idn.idn) + '.bmp', ("Images (*.bmp *.jpg *.tif *.raw)"))
+
+        # print(fname)
+
+        # # *** force input
+        # fname = 'D:/【code】/camera_distance/camera_distance/Images100.bmp'
+        # ok = True
+
         if ok:
             try:
               filename = os.path.basename(fname)  # 获取到需要存储的文件名
               pathname = os.path.join(os.getcwd(), filename)  # 获取带有文件名的文件路径
+              
               newfile = '\\'.join(fname.split('/')[:-1])  # 需要存储到的新文件夹
               print(pathname)
               MVImageSave(self.himage, filename.encode('utf-8'))  # 将图片保存下来
