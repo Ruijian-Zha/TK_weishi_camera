@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QPu
 from PyQt5.QtGui import QPixmap, QPalette, QImage, QIcon
 from PyQt5.QtCore import Qt
 
+import time
+
 
 class MVCam(QWidget):
     def __init__(self):
@@ -15,7 +17,8 @@ class MVCam(QWidget):
         # test auto
         self.openCam()
         self.startGrab()
-        #self.saveImage()
+        # self.btnSave.clicked.emit(0)
+        self.saveImage()
         # self.closeCam()
         # return 0
 
@@ -219,15 +222,17 @@ class MVCam(QWidget):
 
     def saveImage(self):  # 保存图片执行本函数，在非触发模式时，只有采集暂停是才可以保存
         idn = MVGetSampleGrab(self.hCam, self.himage)
+        time.sleep(1)
         print(idn.idn)
         
-        fname, ok = QFileDialog.getSaveFileName(self, '打开文件', './Images' + str(idn.idn) + '.bmp', ("Images (*.bmp *.jpg *.tif *.raw)"))
+        # fname, ok = QFileDialog.getSaveFileName(self, '打开文件', './Images' + str(idn.idn) + '.bmp', ("Images (*.bmp *.jpg *.tif *.raw)"))
 
         # print(fname)
 
         # # *** force input
-        # fname = 'D:/【code】/camera_distance/camera_distance/Images100.bmp'
-        # ok = True
+        fname = 'D:/【code】/camera_distance/camera_distance/Images100.bmp'
+        ok = True
+
 
         if ok:
             try:
@@ -249,23 +254,26 @@ class MVCam(QWidget):
                return 0
         else:
             return 0
-        mode = MVGetTriggerMode(self.hCam)  # 获取当前相机采集模式
-        if(mode.pMode == TriggerModeEnums.TriggerMode_Off):
-            self.btnOpen.setEnabled(False)
-            self.combo.setEnabled(True)
-            self.btnStart.setEnabled(True)
-            self.btnPause.setEnabled(True)
-            self.btnSave.setEnabled(True)
-            self.btnSetting.setEnabled(False)
-            self.btnClose.setEnabled(True)
-        else:
-            self.btnOpen.setEnabled(False)
-            self.combo.setEnabled(True)
-            self.btnStart.setEnabled(True)
-            self.btnPause.setEnabled(False)
-            self.btnSave.setEnabled(True)
-            self.btnSetting.setEnabled(True)
-            self.btnClose.setEnabled(True)
+
+        # app.exit(app.exec_())
+        quit()
+        # mode = MVGetTriggerMode(self.hCam)  # 获取当前相机采集模式
+        # if(mode.pMode == TriggerModeEnums.TriggerMode_Off):
+        #     self.btnOpen.setEnabled(False)
+        #     self.combo.setEnabled(True)
+        #     self.btnStart.setEnabled(True)
+        #     self.btnPause.setEnabled(True)
+        #     self.btnSave.setEnabled(True)
+        #     self.btnSetting.setEnabled(False)
+        #     self.btnClose.setEnabled(True)
+        # else:
+        #     self.btnOpen.setEnabled(False)
+        #     self.combo.setEnabled(True)
+        #     self.btnStart.setEnabled(True)
+        #     self.btnPause.setEnabled(False)
+        #     self.btnSave.setEnabled(True)
+        #     self.btnSetting.setEnabled(True)
+        #     self.btnClose.setEnabled(True)
 
     def closeCam(self):  # 关闭相机执行本函数
         result = MVCloseCam(self.hCam)
