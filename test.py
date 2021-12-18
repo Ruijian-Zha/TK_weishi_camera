@@ -222,7 +222,12 @@ class MVCam(QWidget):
 
     def saveImage(self):  # 保存图片执行本函数，在非触发模式时，只有采集暂停是才可以保存
         idn = MVGetSampleGrab(self.hCam, self.himage)
-        time.sleep(1)
+        
+        # yuan-fang: while loop to make sure we get a solid image
+        while(idn == 0):
+            time.sleep(1)
+            idn = MVGetSampleGrab(self.hCam, self.himage)
+            
         print(idn.idn)
         
         # fname, ok = QFileDialog.getSaveFileName(self, '打开文件', './Images' + str(idn.idn) + '.bmp', ("Images (*.bmp *.jpg *.tif *.raw)"))
