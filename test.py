@@ -230,6 +230,7 @@ class MVCam(QWidget):
         # print(fname)
 
         # # *** force input
+        # the position to save the file
         fname = 'D:/【code】/camera_distance/camera_distance/Images100.bmp'
         ok = True
 
